@@ -62,11 +62,11 @@ $(document).ready(function(){
             },
             submitHandler: function(form) {
 				if($('#date').val()==""){
-					alert('Παρακαλώ διαλέξε ημερομηνία');
+					alert('Παρακαλώ επιλέξτε ημερομηνία');
 					return;
 				}
 				if($('#time').val()==null){
-					alert('Παρακαλώ διαλέξε Ώρα');
+					alert('Παρακαλώ επιλέξτε Ώρα');
 					return;
 				}
 				if($.inArray($('#date').val(), datesForDisable)==0){
@@ -74,7 +74,7 @@ $(document).ready(function(){
 					return;
 				}
 				if($('#subject').val()==null){
-					alert('Παρακαλώ διαλέξε Περιποίηση');
+					alert('Παρακαλώ επιλέξτε Περιποίηση');
 					return;
 				}
 				
@@ -91,7 +91,7 @@ $(document).ready(function(){
 						Body : message 
 					};	
 			
-				//sendEmail(mail);
+				sendEmail(mail);
 				
             }
         })
