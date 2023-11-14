@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	
-	var datesForDisable = ["28/10/2023"]
+	var datesForDisable = ["28/11/2023"]
 	
     $('.datepicker').datepicker({
 		datesDisabled: datesForDisable,
@@ -38,10 +38,6 @@ $(document).ready(function(){
                     required: true,
                     email: true
                 },
-                // message: {
-                    // required: true,
-                    // minlength: 20
-                // }
             },
             messages: {
                 name: {
@@ -59,54 +55,55 @@ $(document).ready(function(){
                 email: {
                     required: "no email, no message"
                 },
-                // message: {
-                    // required: "um...yea, you have to write something to send this form.",
-                    // minlength: "thats all? really?"
-                // },
 				day: {
                     required: "um...yea, you have to select something to send this form."
                 }
             },
             submitHandler: function(form) {
 				if($('#date').val()==""){
-					alert('Please select Date');
+					alert('Παρακαλώ διαλέξε ημερομηνία');
 					return;
 				}
 				if($('#time').val()==null){
-					alert('Please select Time');
+					alert('Παρακαλώ διαλέξε Ώρα');
 					return;
 				}
 				if($.inArray($('#date').val(), datesForDisable)==0){
-					alert('Invalid Date');
+					alert('Η ημερομηνία που διαλέξατε δεν είναι διαθέσιμη');
 					return;
 				}
-					
-                // $(form).ajaxsubmit({
-                    // type:"post",
-                    // data: $(form).serialize(),
-                    // url:"contact_process.php",
-                    // success: function() {
-                        // $('#contactform :input').attr('disabled', 'disabled');
-                        // $('#contactform').fadeto( "slow", 1, function() {
-                            // $(this).find(':input').attr('disabled', 'disabled');
-                            // $(this).find('label').css('cursor','default');
-                            // $('#success').fadein()
-                            // $('.modal').modal('hide');
-		                	// $('#success').modal('show');
-                        // })
-                    // },
-                    // error: function() {
-                        // $('#contactform').fadeto( "slow", 1, function() {
-                            // $('#error').fadein()
-                            // $('.modal').modal('hide');
-		                	// $('#error').modal('show');
-                        // })
-                    // }
-                // })
-				alert('email sent');
+				var message = "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
+							  "<b>Ώρα: "+$('#time').val()+"</b><br>"+
+							  "<b>Όνομα: "+$('#name').val()+"</b><br>";
+							  "<b>Τηλέφωνο: "+$('#phone').val()+"</b><br>";
+				
+				var mail={ 
+						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
+						To : "pasxalis6444@gmail.com",
+						From : "sakis530@hotmail.com",
+						Subject : $('#subject').val(),
+						Body : message 
+					};	
+			
+				sendEmail(mail);
+				
             }
         })
     })
+	
+
         
  })(jQuery)
+ 
+ var sendEmail=function(mail){
+	 Email.send(mail).then(
+	      function(message){
+			if(message=='OK'){
+				alert('Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!')
+			}
+			else
+				alert('Email failed')}
+		);
+ };
+ 
 })
