@@ -34,9 +34,10 @@ $(document).ready(function(){
                     required: true,
                     minlength: 5
                 },
-                email: {
+                phone: {
                     required: true,
-                    email: true
+                    minlength: 10,
+					maxlength: 10
                 },
             },
             messages: {
@@ -52,8 +53,8 @@ $(document).ready(function(){
                     required: "come on, you have a number, don't you?",
                     minlength: "your Number must consist of at least 5 characters"
                 },
-                email: {
-                    required: "no email, no message"
+                phone: {
+                    required: "no phone, no message"
                 },
 				day: {
                     required: "um...yea, you have to select something to send this form."
@@ -72,6 +73,11 @@ $(document).ready(function(){
 					alert('Η ημερομηνία που διαλέξατε δεν είναι διαθέσιμη');
 					return;
 				}
+				if($('#subject').val()==null){
+					alert('Παρακαλώ διαλέξε Περιποίηση');
+					return;
+				}
+				
 				var message = "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
 							  "<b>Ώρα: "+$('#time').val()+"</b><br>"+
 							  "<b>Όνομα: "+$('#name').val()+"</b><br>";
@@ -85,7 +91,7 @@ $(document).ready(function(){
 						Body : message 
 					};	
 			
-				sendEmail(mail);
+				//sendEmail(mail);
 				
             }
         })
