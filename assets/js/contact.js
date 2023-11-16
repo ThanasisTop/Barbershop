@@ -97,9 +97,9 @@ $(document).ready(function(){
         })
     })
 	
-
-        
  })(jQuery)
+ 
+ 
  
  var sendEmail=function(mail){
 	 Email.send(mail).then(
