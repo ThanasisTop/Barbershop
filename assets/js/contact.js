@@ -118,8 +118,8 @@ $(document).ready(function(){
 				
 				var message = "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
 							  "<b>Ώρα: "+$('#time').val()+"</b><br>"+
-							  "<b>Όνομα: "+$('#name').val()+"</b><br>";
-							  "<b>Τηλέφωνο: "+$('#phone').val()+"</b><br>";
+							  "<b>Όνομα: "+$('#name').val()+"</b><br>"+
+							  "<b>Τηλέφωνο: "+$('#phone').val()+"</b><br>"+
 							  "<b>Υπηρεσία: "+$('#subject').val()+"</b><br>";
 				
 				var mail={ 
