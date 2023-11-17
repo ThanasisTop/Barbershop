@@ -146,6 +146,7 @@ $(document).ready(function(){
 	      function(message){
 			if(message=='OK'){
 				alert('Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!')
+				window.location.reload();
 			}
 			else
 				alert('Email failed')}
