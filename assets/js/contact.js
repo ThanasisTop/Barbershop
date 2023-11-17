@@ -3,8 +3,7 @@ $(document).ready(function(){
 	var datesForDisable = ["28/11/2023"]
 	var datesAndTimesForDisable = {
 		"27/11/2023": ['11:00', '12:00', '17:00'],
-		"30/11/2023": ['20:00', '21:00', '21:30']
-}	;
+		"30/11/2023": ['20:00', '21:00', '21:30']};
 	
     $('.datepicker').datepicker({
 		datesDisabled: datesForDisable,
@@ -27,6 +26,8 @@ $(document).ready(function(){
 		});
 		document.getElementById("unavailableHours").innerHTML = txt;
 	});
+	
+	
 	
     (function($) {
         "use strict";
@@ -132,6 +133,10 @@ $(document).ready(function(){
 				
 				sendEmail(mail);
 				
+				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
+																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
+																	'</div>';
+				document.getElementById("afterEmailErase").innerHTML = '<div></div>';	
             }
         })
     })
@@ -145,11 +150,19 @@ $(document).ready(function(){
 	 Email.send(mail).then(
 	      function(message){
 			if(message=='OK'){
-				alert('Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!')
-				window.location.reload();
+				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
+																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
+																	'</div>';
+				document.getElementById("afterEmailErase").innerHTML = '<div></div>';
 			}
-			else
-				alert('Email failed')}
+			else{
+				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
+																		'<h2 class="contact-title">Το ραντεβού</h2><h2 class="contact-title" style="color:red">δεν ολοκληρώθηκε</h2>'+
+																		'<h2 class="contact-title">Ξαναπροσπαθήστε σε λιγο.</h2>'+
+																'</div>';
+				document.getElementById("afterEmailErase").innerHTML = '<div></div>';
+			}
+		}
 		);
  };
  
