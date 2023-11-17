@@ -27,6 +27,11 @@
     
     <!-- datepicker styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+	
+	<!--Timepicker-->
+	
+
+	
 </head>
     <!--? Preloader Start -->
     <div id="preloader-active">
@@ -132,7 +137,7 @@
 									<div class="form-group" id="replace">
 										<select class="form-control pt-3" id="time">
 											<option selected value="0" disabled>Select Time</option>
-											<option value="10:00" id="timeone">10:00</option>
+											<option value="10:00">10:00</option>
 											<option value="10:30">10:30</option>
 											<option value="11:00">11:00</option>
 											<option value="11:30">11:30</option>
@@ -151,9 +156,12 @@
 											<option value="21:30">21:30</option>
 										</select>
 									</div>
+									<p style="color:red" id="unavailableHours"></p>
 								</div>
+								
 								<br>
                             </div>
+							
                             <div class="row">
                                 <!-- <div class="col-12"> -->
                                     <!-- <div class="form-group"> -->
@@ -187,6 +195,7 @@
                                 <button type="submit" class="button button-contactForm boxed-btn">Send</button>
                             </div>
                         </form>
+		
                     </div>
                     <div class="col-12">
                         <h2 class="contact-title">Contact</h2>

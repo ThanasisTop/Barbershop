@@ -1,6 +1,10 @@
 $(document).ready(function(){
 	
 	var datesForDisable = ["28/11/2023"]
+	var datesAndTimesForDisable = {
+		"27/11/2023": ['11:00', '12:00', '17:00'],
+		"30/11/2023": ['20:00', '21:00', '21:30']
+}	;
 	
     $('.datepicker').datepicker({
 		datesDisabled: datesForDisable,
@@ -10,10 +14,26 @@ $(document).ready(function(){
 		startDate: '-0d'
 	});
 	
+	$("#date" ).on( "change", function() {
+		var txt='';
+		$.each(datesAndTimesForDisable, function(key, value) {
+			if($('#date').val()==key){
+				txt+='Μη διαθέσιμες ώρες για αυτή τη μέρα.<br>'
+				for(i in value){
+					txt+=value[i]+'<br>'
+				}	
+			}			
+	
+		});
+		document.getElementById("unavailableHours").innerHTML = txt;
+	});
+	
     (function($) {
         "use strict";
 
     
+	
+	
     jQuery.validator.addMethod('answercheck', function (value, element) {
         return this.optional(element) || /^\bcat\b$/.test(value)
     }, "type the correct answer -_-");
@@ -61,7 +81,9 @@ $(document).ready(function(){
                 }
             },
             submitHandler: function(form) {
-				if($('#date').val()==""){
+				
+				
+				if(!$('#date').val()){
 					alert('Παρακαλώ επιλέξτε ημερομηνία');
 					return;
 				}
@@ -77,11 +99,28 @@ $(document).ready(function(){
 					alert('Παρακαλώ επιλέξτε Περιποίηση');
 					return;
 				}
+				var unavailableHour=false;
+				$.each(datesAndTimesForDisable, function(key, value) {
+			
+					if($('#date').val()==key && $.inArray($('#time').val(), value)!=-1){
+						unavailableHour=true;
+						return false;
+					}
+					else
+						unavailableHour=false;
+	
+				});
+				
+				if(unavailableHour){
+					alert('Η ώρα που διαλέξατε δεν ειναι διαθέσιμη!');
+					return;
+				}
 				
 				var message = "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
 							  "<b>Ώρα: "+$('#time').val()+"</b><br>"+
 							  "<b>Όνομα: "+$('#name').val()+"</b><br>";
 							  "<b>Τηλέφωνο: "+$('#phone').val()+"</b><br>";
+							  "<b>Υπηρεσία: "+$('#subject').val()+"</b><br>";
 				
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
@@ -90,7 +129,7 @@ $(document).ready(function(){
 						Subject : $('#subject').val(),
 						Body : message 
 					};	
-			
+				
 				sendEmail(mail);
 				
             }
@@ -99,6 +138,7 @@ $(document).ready(function(){
 	
  })(jQuery)
  
+
  
  
  var sendEmail=function(mail){
