@@ -133,10 +133,6 @@ $(document).ready(function(){
 				
 				sendEmail(mail);
 				
-				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
-																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
-																	'</div>';
-				document.getElementById("afterEmailErase").innerHTML = '<div></div>';	
             }
         })
     })
