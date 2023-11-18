@@ -1,9 +1,10 @@
 $(document).ready(function(){
 	
-	var datesForDisable = ["28/11/2023"]
-	var datesAndTimesForDisable = {
-		"27/11/2023": ['11:00', '12:00', '17:00'],
-		"30/11/2023": ['20:00', '21:00', '21:30']};
+	var datesForDisable = [];
+	var datesAndTimesForDisable = {};
+	//var datesAndTimesForDisable = {
+		//"27/11/2023": ['11:00', '12:00', '17:00'],
+		//"30/11/2023": ['20:00', '21:00', '21:30']};
 	
     $('.datepicker').datepicker({
 		datesDisabled: datesForDisable,
