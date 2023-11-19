@@ -4,7 +4,7 @@ $(document).ready(function(){
 	//var datesAndTimesForDisable = {};
 	var datesAndTimesForDisable = {
 		"20/11/2023": ['12:00', '12:30', '13:00', '17:00', '19:00'],
-		"22/11/2023": ['17:30'],
+		"22/11/2023": ['17:30','21:30'],
 		"23/11/2023": ['19:00']};
 	
     $('.datepicker').datepicker({
