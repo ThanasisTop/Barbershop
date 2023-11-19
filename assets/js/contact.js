@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	
-	var datesForDisable = [];
+	var datesForDisable = ["21/11/2023","24/11/2023","25/11/2023","30/11/2023"];
 	var datesAndTimesForDisable = {};
 	//var datesAndTimesForDisable = {
 		//"27/11/2023": ['11:00', '12:00', '17:00'],
