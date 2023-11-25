@@ -32,7 +32,7 @@ $(document).ready(function(){
 		// document.getElementById("unavailableHours").innerHTML = txt;
 	// });
 	
-	//In db case
+	//Date validation in db case
 	$("#date" ).on( "change", function() {
 		var txt='';
 		apps.forEach(function(appointment) {
@@ -153,7 +153,7 @@ $(document).ready(function(){
 	
 				// });
 				
-				//In db case
+				//time of selected date validation in db case
 				apps.forEach(function(appointment) {
 					if($('#date').val()==appointment.date && $('#time').val()==appointment.time){
 						unavailableHour=true;
@@ -180,7 +180,19 @@ $(document).ready(function(){
 						Body : message 
 					};	
 				
-				sendEmail(mail);
+				// Save data
+   dataRef.set({
+					date:$('#date').val(),
+					time:$('#time').val()
+				}).then(() => {
+       // Trigger email sending function here upon successful data save
+       sendEmail(mail);
+     })
+     .catch((error) => {
+       console.error("Error saving data: ", error);
+     });
+				
+				//sendEmail(mail);
             }
         })
     })
