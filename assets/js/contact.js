@@ -181,18 +181,17 @@ $(document).ready(function(){
 					};	
 				
 				// Save data
-   ref.set({
+    ref.set({
 					date:$('#date').val(),
 					time:$('#time').val()
 				}).then(() => {
-       // Trigger email sending function here upon successful data save
+       // Trigger email sending if data save successful
        sendEmail(mail);
      })
      .catch((error) => {
        console.error("Error saving data: ", error);
      });
-				
-				//sendEmail(mail);
+
             }
         })
     })
@@ -206,10 +205,6 @@ $(document).ready(function(){
 	 Email.send(mail).then(
 	      function(message){
 			if(message=='OK'){
-				//ref.push({
-					//date:$('#date').val(),
-					//time:$('#time').val()
-				//})
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
 																	'</div>';
