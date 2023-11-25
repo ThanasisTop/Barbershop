@@ -66,7 +66,6 @@ $(document).ready(function(){
 		snapshot.forEach(function(childSnapshot) {
 			var userData = childSnapshot.val();
 			apps.push(userData);
-			console.log(apps);
 		});
 	});
 	
@@ -175,7 +174,7 @@ $(document).ready(function(){
 				
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "sakis530@hotmail.com",
+						To : "pasxalis6444@gmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
