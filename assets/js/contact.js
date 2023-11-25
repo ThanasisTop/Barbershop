@@ -31,11 +31,12 @@ $(document).ready(function(){
 		// document.getElementById("unavailableHours").innerHTML = txt;
 	// });
 	
+	//In db case
 	$("#date" ).on( "change", function() {
 		var txt='';
 		apps.forEach(function(appointment) {
 			if($('#date').val()==appointment.date){
-				txt+=appointment.date+' μη διαθέσιμη ώρα: '+appointment.time+'<br>';
+				txt+='Μη διαθέσιμη ώρα: '+appointment.time+'<br>';
 			}	
 		});
 		document.getElementById("unavailableHours").innerHTML = txt;
@@ -141,15 +142,23 @@ $(document).ready(function(){
 					return;
 				}
 				var unavailableHour=false;
-				$.each(datesAndTimesForDisable, function(key, value) {
+				// $.each(datesAndTimesForDisable, function(key, value) {
 			
-					if($('#date').val()==key && $.inArray($('#time').val(), value)!=-1){
+					// if($('#date').val()==key && $.inArray($('#time').val(), value)!=-1){
+						// unavailableHour=true;
+						// return false;
+					// }
+					// else
+						// unavailableHour=false;
+	
+				// });
+				
+				//In db case
+				apps.forEach(function(appointment) {
+					if($('#date').val()==appointment.date && $('#time').val()==appointment.time){
 						unavailableHour=true;
 						return false;
-					}
-					else
-						unavailableHour=false;
-	
+					}	
 				});
 				
 				if(unavailableHour){
