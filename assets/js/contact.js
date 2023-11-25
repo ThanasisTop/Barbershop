@@ -17,20 +17,56 @@ $(document).ready(function(){
 		startDate: '-0d'
 	});
 	
+	// $("#date" ).on( "change", function() {
+		// var txt='';
+		// $.each(datesAndTimesForDisable, function(key, value) {
+			// if($('#date').val()==key){
+				// txt+='Μη διαθέσιμες ώρες για αυτή τη μέρα.<br>'
+				// for(i in value){
+					// txt+=value[i]+'<br>'
+				// }	
+			// }			
+	
+		// });
+		// document.getElementById("unavailableHours").innerHTML = txt;
+	// });
+	
 	$("#date" ).on( "change", function() {
 		var txt='';
-		$.each(datesAndTimesForDisable, function(key, value) {
-			if($('#date').val()==key){
-				txt+='Μη διαθέσιμες ώρες για αυτή τη μέρα.<br>'
-				for(i in value){
-					txt+=value[i]+'<br>'
-				}	
-			}			
-	
+		apps.forEach(function(appointment) {
+			if($('#date').val()==appointment.date){
+				txt+=appointment.date+' μη διαθέσιμη ώρα: '+appointment.time+'<br>';
+			}	
 		});
 		document.getElementById("unavailableHours").innerHTML = txt;
 	});
 	
+	const firebaseConfig = {
+    apiKey: "AIzaSyB7COIXZWAOl9a2XyynwYb-uIasbu0NFn0",
+    authDomain: "barbershop-76b04.firebaseapp.com",
+    databaseURL: "https://barbershop-76b04-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "barbershop-76b04",
+    storageBucket: "barbershop-76b04.appspot.com",
+    messagingSenderId: "503743576752",
+    appId: "1:503743576752:web:afc840af1ed3db3cc29975",
+    measurementId: "G-X4PKNN2H94"
+	};
+	
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	const database = firebase.database();
+	
+	const ref = database.ref("appointment");
+	
+	var apps=[]
+	ref.orderByChild('date').once('value', function(snapshot) {
+		
+		snapshot.forEach(function(childSnapshot) {
+			var userData = childSnapshot.val();
+			apps.push(userData);
+			console.log(apps);
+		});
+	});
 	
 	
     (function($) {
@@ -129,14 +165,13 @@ $(document).ready(function(){
 				
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "pasxalis6444@gmail.com",
+						To : "sakis530@hotmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
 					};	
 				
 				sendEmail(mail);
-				
             }
         })
     })
@@ -150,6 +185,10 @@ $(document).ready(function(){
 	 Email.send(mail).then(
 	      function(message){
 			if(message=='OK'){
+				ref.push({
+					date:$('#date').val(),
+					time:$('#time').val()
+				})
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
 																	'</div>';
