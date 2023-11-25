@@ -181,7 +181,7 @@ $(document).ready(function(){
 					};	
 				
 				// Save data
-   dataRef.set({
+   ref.set({
 					date:$('#date').val(),
 					time:$('#time').val()
 				}).then(() => {
@@ -206,10 +206,10 @@ $(document).ready(function(){
 	 Email.send(mail).then(
 	      function(message){
 			if(message=='OK'){
-				ref.push({
-					date:$('#date').val(),
-					time:$('#time').val()
-				})
+				//ref.push({
+					//date:$('#date').val(),
+					//time:$('#time').val()
+				//})
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
 																	'</div>';
