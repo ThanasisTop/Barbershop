@@ -15,7 +15,7 @@ $(document).ready(function(){
 		language: "en",
 		autoclose: true,
 		format: "dd/mm/yyyy",
-		startDate: '-0d'
+		startDate: new Date()
 	});
 	
 	// $("#date" ).on( "change", function() {
