@@ -35,14 +35,30 @@ $(document).ready(function(){
 	//Date validation in db case
 	$("#date" ).on( "change", function() {
 		var txt='';
+		var appointmentsToSort=[];
+		
+		//Find unavailable hours
 		apps.forEach(function(appointment) {
 			if($('#date').val()==appointment.date){
-				txt+='Μη διαθέσιμη ώρα: '+appointment.time+'<br>';
+				appointmentsToSort.push(appointment);
 			}	
 		});
-		document.getElementById("unavailableHours").innerHTML = txt;
+		
+		//Sort unavailable hours to display
+		var sortedAppointments = sortAppointmentsOfCurrentDate(appointmentsToSort);
+		sortedAppointments.forEach(function(appointment) {
+			txt+=appointment.time+'<br>';
+		});
+		
+		//Display unavailable hours
+		if(txt.length>0){
+			document.getElementById("unavailableHours").innerHTML = 'Μη διαθέσιμη ώρες<br>'+txt;
+		}
+		else
+			document.getElementById("unavailableHours").innerHTML = txt;
 	});
 	
+	//Database configuration
 	const firebaseConfig = {
     apiKey: "AIzaSyB7COIXZWAOl9a2XyynwYb-uIasbu0NFn0",
     authDomain: "barbershop-76b04.firebaseapp.com",
@@ -62,13 +78,28 @@ $(document).ready(function(){
 	
 	var apps=[]
 	ref.orderByChild('date').once('value', function(snapshot) {
-		
 		snapshot.forEach(function(childSnapshot) {
 			var userData = childSnapshot.val();
 			apps.push(userData);
 		});
 	});
 	
+	
+	function sortAppointmentsOfCurrentDate(appointments){
+		const formattedData = appointments.map(item => {
+			const parts = item.date.split('/');
+			const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T${item.time}`);
+			return { ...item, formattedDate };
+		});
+
+		// Sort the array based on the 'formattedDate' property
+		const sortedData = formattedData.sort((a, b) => a.formattedDate - b.formattedDate);
+		
+		// Extracting sorted data back to the original format (without 'formattedDate')
+		const sortedResult = sortedData.map(({ formattedDate, ...rest }) => rest);
+		
+		return sortedResult
+	}
 	
     (function($) {
         "use strict";
@@ -153,7 +184,7 @@ $(document).ready(function(){
 	
 				// });
 				
-				//time of selected date validation in db case
+				//selected date time validation in db case
 				apps.forEach(function(appointment) {
 					if($('#date').val()==appointment.date && $('#time').val()==appointment.time){
 						unavailableHour=true;
@@ -166,15 +197,16 @@ $(document).ready(function(){
 					return;
 				}
 				
+				//email preperation
 				var message = "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
 							  "<b>Ώρα: "+$('#time').val()+"</b><br>"+
 							  "<b>Όνομα: "+$('#name').val()+"</b><br>"+
 							  "<b>Τηλέφωνο: "+$('#phone').val()+"</b><br>"+
 							  "<b>Υπηρεσία: "+$('#subject').val()+"</b><br>";
-				
+				//pasxalis6444@gmail.com
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "pasxalis6444@gmail.com",
+						To : "sakis530@hotmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
@@ -182,8 +214,9 @@ $(document).ready(function(){
 				
 				// Save data
 				ref.push({date:$('#date').val(),
-						time:$('#time').val()}).then(() => {
-				// Trigger email sending if data save successful
+						time:$('#time').val(),
+						name:$('#name').val()}).then(() => {
+					// Trigger email sending if data save successful
 					sendEmail(mail);
 				})
 				.catch((error) => {
@@ -207,8 +240,9 @@ $(document).ready(function(){
 																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
 																	'</div>';
 				document.getElementById("afterEmailErase").innerHTML = '<div></div>';
-				alert('Το ραντεβού ολοκληρώθηκε με επιτυχία. Ευχαριστούμε πολυ!');
-				location.reload();
+				setTimeout(() => {
+					location.reload();
+				}, "1000");
 			}
 			else{
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
