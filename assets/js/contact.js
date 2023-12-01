@@ -58,6 +58,23 @@ $(document).ready(function(){
 			document.getElementById("unavailableHours").innerHTML = txt;
 	});
 	
+	
+	let today = new Date();
+
+	// Extract date components
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+	let yyyy = today.getFullYear();
+	
+	// Extract time components
+	let hh = String(today.getHours()).padStart(2, '0');
+	let min = String(today.getMinutes()).padStart(2, '0');
+	let ss = String(today.getSeconds()).padStart(2, '0');
+	
+	// Format the date and time as dd/mm/yyyy HH:MM:SS
+	let formattedDateTime = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+	
+	
 	//Database configuration
 	const firebaseConfig = {
     apiKey: "AIzaSyB7COIXZWAOl9a2XyynwYb-uIasbu0NFn0",
@@ -206,7 +223,7 @@ $(document).ready(function(){
 				
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "pasxalis6444@gmail.com",
+						To : "sakis530@hotmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
@@ -214,8 +231,9 @@ $(document).ready(function(){
 				
 				// Save data
 				ref.push({date:$('#date').val(),
-						time:$('#time').val(),
-						name:$('#name').val()}).then(() => {
+						  time:$('#time').val(),
+						  name:$('#name').val(),
+						  dateCreated: formattedDateTime}).then(() => {
 					// Trigger email sending if data save successful
 					sendEmail(mail);
 				})
