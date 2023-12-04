@@ -1,15 +1,8 @@
 $(document).ready(function(){
 	
-	var datesForDisable = ["24/11/2023","25/11/2023","30/11/2023","25/12/2023","31/12/2023","01/01/2024"];
+	var datesForDisable = ["25/12/2023","31/12/2023","01/01/2024"];
 	//var datesAndTimesForDisable = {};
-	var datesAndTimesForDisable = {
-		"26/11/2023": ['10:00','10:30'],
-		"27/11/2023": ['11:00','11:30','17:30'],
-		"01/12/2023": ['20:00'],
-		"02/12/2023": ['17:30'],
-		"26/12/2023": ['10:00','10:30','11:00','11:30','12:00','12:30','13:00'],
-		"02/01/2024": ['10:00','10:30','11:00','11:30','12:00','12:30','13:00']};                                            
-	                                                                         
+	                                                                        
     $('.datepicker').datepicker({                                            
 		datesDisabled: datesForDisable,                                      
 		language: "en",
@@ -37,6 +30,10 @@ $(document).ready(function(){
 		var txt='';
 		var appointmentsToSort=[];
 		
+		var splittedDate=$('#date').val().split('/');
+		var dateToCheck=new Date(splittedDate[2]+'-'+splittedDate[1]+'-'+splittedDate[0]);
+		
+		
 		//Find unavailable hours
 		apps.forEach(function(appointment) {
 			if($('#date').val()==appointment.date){
@@ -49,6 +46,10 @@ $(document).ready(function(){
 		sortedAppointments.forEach(function(appointment) {
 			txt+=appointment.time+'<br>';
 		});
+		
+		if(dateToCheck.getDay()==0||dateToCheck.getDay()==6){
+			txt+='17:00-21:30';
+		}
 		
 		//Display unavailable hours
 		if(txt.length>0){
@@ -171,7 +172,8 @@ $(document).ready(function(){
                 }
             },
             submitHandler: function(form) {
-				
+				var splittedDate=$('#date').val().split('/');
+				var dateToCheck=new Date(splittedDate[2]+'-'+splittedDate[1]+'-'+splittedDate[0]);
 				
 				if(!$('#date').val()){
 					alert('Παρακαλώ επιλέξτε ημερομηνία');
@@ -190,20 +192,35 @@ $(document).ready(function(){
 					return;
 				}
 				var unavailableHour=false;
-				// $.each(datesAndTimesForDisable, function(key, value) {
-			
-					// if($('#date').val()==key && $.inArray($('#time').val(), value)!=-1){
-						// unavailableHour=true;
-						// return false;
-					// }
-					// else
-						// unavailableHour=false;
-	
-				// });
+				
 				
 				//selected date time validation in db case
 				apps.forEach(function(appointment) {
-					if($('#date').val()==appointment.date && $('#time').val()==appointment.time){
+					if(($('#date').val()==appointment.date && $('#time').val()==appointment.time)||
+					   (dateToCheck.getDay()==6 
+						&& ($('#time').val()=="17:00"
+							||$('#time').val()=="17:00"
+							||$('#time').val()=="17:30"
+							||$('#time').val()=="18:00"
+							||$('#time').val()=="18:30"
+							||$('#time').val()=="19:00"
+							||$('#time').val()=="19:30"
+							||$('#time').val()=="20:00"
+							||$('#time').val()=="20:30"
+							||$('#time').val()=="21:00"
+							||$('#time').val()=="21:30"))||
+					   (dateToCheck.getDay()==0 
+						&& ($('#time').val()=="17:00"
+							||$('#time').val()=="17:00"
+							||$('#time').val()=="17:30"
+							||$('#time').val()=="18:00"
+							||$('#time').val()=="18:30"
+							||$('#time').val()=="19:00"
+							||$('#time').val()=="19:30"
+							||$('#time').val()=="20:00"
+							||$('#time').val()=="20:30"
+							||$('#time').val()=="21:00"
+							||$('#time').val()=="21:30"))){
 						unavailableHour=true;
 						return false;
 					}	
