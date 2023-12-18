@@ -60,20 +60,21 @@ $(document).ready(function(){
 	});
 	
 	
-	let today = new Date();
+	// let today = new Date();
 
-	// Extract date components
-	let dd = String(today.getDate()).padStart(2, '0');
-	let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-	let yyyy = today.getFullYear();
+	// // Extract date components
+	// let dd = String(today.getDate()).padStart(2, '0');
+	// let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+	// let yyyy = today.getFullYear();
 	
-	// Extract time components
-	let hh = String(today.getHours()).padStart(2, '0');
-	let min = String(today.getMinutes()).padStart(2, '0');
-	let ss = String(today.getSeconds()).padStart(2, '0');
+	// // Extract time components
+	// let hh = String(today.getHours()).padStart(2, '0');
+	// let min = String(today.getMinutes()).padStart(2, '0');
+	// let ss = String(today.getSeconds()).padStart(2, '0');
 	
-	// Format the date and time as dd/mm/yyyy HH:MM:SS
-	let formattedDateTime = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+	// // Format the date and time as dd/mm/yyyy HH:MM:SS
+	// let formattedDateTime = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+	// let myId=`${dd}${mm}${yyyy}${hh}${min}${ss}`
 	
 	
 	//Database configuration
@@ -231,8 +232,11 @@ $(document).ready(function(){
 					return;
 				}
 				
+				var dateAndIdArray=setDateAndIdOnSubmit();
+				
 				//email preperation
-				var message = "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
+				var message = "<b>Κωδικος Ραντεβου: "+dateAndIdArray[1]+"</b><br>"+
+							  "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
 							  "<b>Ώρα: "+$('#time').val()+"</b><br>"+
 							  "<b>Όνομα: "+$('#name').val()+"</b><br>"+
 							  "<b>Τηλέφωνο: "+$('#phone').val()+"</b><br>"+
@@ -240,17 +244,20 @@ $(document).ready(function(){
 				
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "pasxalis6444@gmail.com",
+						To : "sakis530@hotmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
 					};	
 				
-				// Save data
-				ref.push({date:$('#date').val(),
+				
+				
+				//Save data
+				ref.push({
+						  id: dateAndIdArray[1],
+						  date:$('#date').val(),
 						  time:$('#time').val(),
-						  name:$('#name').val(),
-						  dateCreated: formattedDateTime}).then(() => {
+						  dateCreated: dateAndIdArray[0]}).then(() => {
 					// Trigger email sending if data save successful
 					sendEmail(mail);
 				})
@@ -265,8 +272,30 @@ $(document).ready(function(){
  })(jQuery)
  
 
- 
- 
+var setDateAndIdOnSubmit=function(){
+	let arrayToReturn=[];
+	
+	let today = new Date();
+
+	// Extract date components
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+	let yyyy = today.getFullYear();
+	
+	// Extract time components
+	let hh = String(today.getHours()).padStart(2, '0');
+	let min = String(today.getMinutes()).padStart(2, '0');
+	let ss = String(today.getSeconds()).padStart(2, '0');
+	
+	// Format the date and time as dd/mm/yyyy HH:MM:SS
+	let formattedDateTime = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+	let myId=`${dd}${mm}${yyyy}${hh}${min}${ss}`
+	
+	arrayToReturn.push(formattedDateTime);
+	arrayToReturn.push(myId);
+	return arrayToReturn;
+}
+
  var sendEmail=function(mail){
 	 Email.send(mail).then(
 	      function(message){
