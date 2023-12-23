@@ -79,10 +79,8 @@ $(document).ready(function(){
 	
 	//Database configuration
 	const firebaseConfig = {
-     databaseURL: "https://barbershop-76b04-default-rtdb.europe-west1.firebasedatabase.app",
+		databaseURL: "https://barbershop-76b04-default-rtdb.europe-west1.firebasedatabase.app",
 	};
-	
-	
 	
 	// Initialize Firebase
 	firebase.initializeApp(firebaseConfig);
@@ -238,15 +236,15 @@ $(document).ready(function(){
 							  "<b>Υπηρεσία: "+$('#subject').val()+"</b><br>";
 				
 				var mail={ 
-						SecureToken : "${process.env.ELASTICMAIL_SECURE_TOKEN}",
-						To : "sakis530@hotmail.com",
+						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
+						To : "pasxalis6444@gmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
 					};	
 				
 				
-				//sendEmail(mail);
+				
 				//Save data
 				ref.push({
 						  id: dateAndIdArray[1],
@@ -304,7 +302,6 @@ var setDateAndIdOnSubmit=function(){
 				}, "1000");
 			}
 			else{
-				console.log(message)
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού</h2><h2 class="contact-title" style="color:red">δεν ολοκληρώθηκε</h2>'+
 																		'<h2 class="contact-title">Ξαναπροσπαθήστε σε λιγο.</h2>'+
