@@ -78,11 +78,8 @@ $(document).ready(function(){
 	
 	
 	//Database configuration
-	require("dotenv").config();
-	// Access the variables defined in your .env file
-	const dbUrl = process.env.FIREBASE_DATABASE_URL;
 	const firebaseConfig = {
-     databaseURL: "dbUrl",
+     databaseURL: "https://barbershop-76b04-default-rtdb.europe-west1.firebasedatabase.app",
 	};
 	
 	
