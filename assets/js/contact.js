@@ -78,16 +78,14 @@ $(document).ready(function(){
 	
 	
 	//Database configuration
+	require("dotenv").config();
+	// Access the variables defined in your .env file
+	const dbUrl = process.env.FIREBASE_DATABASE_URL;
 	const firebaseConfig = {
-    apiKey: "AIzaSyB7COIXZWAOl9a2XyynwYb-uIasbu0NFn0",
-    authDomain: "barbershop-76b04.firebaseapp.com",
-    databaseURL: "https://barbershop-76b04-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "barbershop-76b04",
-    storageBucket: "barbershop-76b04.appspot.com",
-    messagingSenderId: "503743576752",
-    appId: "1:503743576752:web:afc840af1ed3db3cc29975",
-    measurementId: "G-X4PKNN2H94"
+     databaseURL: "dbUrl",
 	};
+	
+	
 	
 	// Initialize Firebase
 	firebase.initializeApp(firebaseConfig);
@@ -243,15 +241,15 @@ $(document).ready(function(){
 							  "<b>Υπηρεσία: "+$('#subject').val()+"</b><br>";
 				
 				var mail={ 
-						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "pasxalis6444@gmail.com",
+						SecureToken : "${process.env.ELASTICMAIL_SECURE_TOKEN}",
+						To : "sakis530@hotmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
 					};	
 				
 				
-				
+				//sendEmail(mail);
 				//Save data
 				ref.push({
 						  id: dateAndIdArray[1],
@@ -309,6 +307,7 @@ var setDateAndIdOnSubmit=function(){
 				}, "1000");
 			}
 			else{
+				console.log(message)
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού</h2><h2 class="contact-title" style="color:red">δεν ολοκληρώθηκε</h2>'+
 																		'<h2 class="contact-title">Ξαναπροσπαθήστε σε λιγο.</h2>'+
