@@ -76,7 +76,6 @@ $(document).ready(function(){
 	// let formattedDateTime = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
 	// let myId=`${dd}${mm}${yyyy}${hh}${min}${ss}`
 	
-	
 	//Database configuration
 	const firebaseConfig = {
 		databaseURL: "https://barbershop-76b04-default-rtdb.europe-west1.firebasedatabase.app",
