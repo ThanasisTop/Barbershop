@@ -48,6 +48,7 @@ dataRef.once('value').then((snapshot) => {
 	// Handle any errors
 	document.getElementById("dataList").innerHTML = '<h1 style="color:red">Permission Denied</h1>';
 	console.error("Error fetching data:", error);
+	document.getElementById("spinner").style.display = "none";
 });
 
 function LogOut(){
