@@ -20,8 +20,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     getData();
   } else {
     // No user is signed in, handle this as needed
-	document.getElementById("dataList").innerHTML = '<h1 style="color:red">No user signed in</h1>';
+	document.getElementById("dataList").innerHTML = '<h1 style="color:red">Permission Denied</h1>';
 	document.getElementById("spinner").style.display = "none";
+	document.getElementById("title").style.display = "none";
+	document.getElementById("logOutButton").style.display = "none";
     console.log("No user signed in.");
 	setTimeout(()=>{window.location.href = "./login.html"}, "2000")
   }
