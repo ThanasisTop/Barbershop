@@ -9,18 +9,16 @@ appId: "1:503743576752:web:afc840af1ed3db3cc29975",
 measurementId: "G-X4PKNN2H94"
 };
 
-
-
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+//Check if user exist
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     getData();
   } else {
     // No user is signed in, handle this as needed
-	document.getElementById("dataList").innerHTML = '<h1 style="color:red">Permission Denied</h1>';
+	document.getElementById("dataList").innerHTML = '<h1 style="color:red">Access Denied</h1>';
 	document.getElementById("spinner").style.display = "none";
 	document.getElementById("title").style.display = "none";
 	document.getElementById("logOutButton").style.display = "none";
@@ -65,7 +63,7 @@ function getData(){
 	})
 	.catch((error) => {
 		// Handle any errors
-		document.getElementById("dataList").innerHTML = '<h1 style="color:red">Permission Denied</h1>';
+		document.getElementById("dataList").innerHTML = '<h1 style="color:red">Access Denied</h1>';
 		console.error("Error fetching data:", error);
 		document.getElementById("spinner").style.display = "none";
 	});

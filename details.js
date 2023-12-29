@@ -11,6 +11,7 @@ measurementId: "G-X4PKNN2H94"
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
 const database = firebase.database();
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -24,7 +25,8 @@ function fetchChildById() {
   dataRef.once('value').then((snapshot) => {
     const childData = snapshot.val();
 	document.getElementById("title").innerHTML = '<h5 class="card-title" id="title">Κωδικός Ραντεβού: '+childData.id+'</h5>';
-	document.getElementById("details").innerHTML = '<p class="card-text" id="details">Ημερομηνία Ραντεβού: '+childData.date+' Ώρα Ραντεβού: '+childData.time+'</p>';
+	document.getElementById("datedetails").innerHTML = '<p class="card-text" id="datedetails">Ημερομηνία Ραντεβού: <b>'+childData.date+'</b></p>';
+	document.getElementById("hourdetails").innerHTML = '<p class="card-text" id="hourdetails">Ώρα Ραντεβού: <b>'+childData.time+'</b></p>';
 	document.getElementById("spinner").style.display = "none";
   })
   .catch((error) => {
@@ -34,7 +36,17 @@ function fetchChildById() {
 });
 }
 
-fetchChildById();
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+	fetchChildById();
+  } else {
+    // No user is signed in, handle this as needed
+	document.getElementById("spinner").style.display = "none";
+	document.getElementById("card").innerHTML = '<h1 style="color:red">Access Denied</h1>';
+    console.log("No user signed in.");
+	setTimeout(()=>{window.location.href = "./login.html"}, "2000")
+  }
+});
 
 function deleteAppointment(){
 
