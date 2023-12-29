@@ -18,7 +18,7 @@ const childId = urlParams.get('id');
 //const dataRef = database.ref('private_appointment').child(childId);
 const dataRef = database.ref('appointment').child(childId);
 
-function fetchChildById(childId) {
+function fetchChildById() {
    
   // Fetch the data once
   dataRef.once('value').then((snapshot) => {
@@ -34,7 +34,7 @@ function fetchChildById(childId) {
 });
 }
 
-fetchChildById(childId);
+fetchChildById();
 
 function deleteAppointment(){
 
