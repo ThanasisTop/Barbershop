@@ -29,7 +29,7 @@ function fetchChildById(childId) {
   })
   .catch((error) => {
 	// Handle any errors
-	document.getElementById("card").innerHTML = '<h1 style="color:red">Permission Denied Or Not Found</h1>';
+	document.getElementById("card").innerHTML = '<h1 style="color:red">Not Found</h1>';
 	console.error("Error fetching data:", error);
 });
 }
@@ -46,6 +46,7 @@ function deleteAppointment(){
     })
     .catch((error) => {
       console.error(`Error deleting child with ID ${childId}:`, error);
+	  alert('Delete failed')
     });
 	
 }
