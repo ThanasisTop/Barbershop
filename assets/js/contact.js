@@ -167,6 +167,15 @@ $(document).ready(function(){
             submitHandler: function(form) {
 				var splittedDate=$('#date').val().split('/');
 				var dateToCheck=new Date(splittedDate[2]+'-'+splittedDate[1]+'-'+splittedDate[0]);
+				var splittedTime=$('#time').val().split(':');
+				
+				dateToCheck.setHours(splittedTime[0]);
+				dateToCheck.setMinutes(splittedTime[1]);
+				
+				if(new Date()>dateToCheck){
+					alert('Η ώρα που διαλέξατε έχει παρέλθει');
+					return;
+				}
 				
 				if(!$('#date').val()){
 					alert('Παρακαλώ επιλέξτε ημερομηνία');
@@ -243,19 +252,19 @@ $(document).ready(function(){
 					};	
 				
 				
-				
+				alert('data save successful');
 				//Save data
-				ref.push({
-						  id: dateAndIdArray[1],
-						  date:$('#date').val(),
-						  time:$('#time').val(),
-						  dateCreated: dateAndIdArray[0]}).then(() => {
-					// Trigger email sending if data save successful
-					sendEmail(mail);
-				})
-				.catch((error) => {
-					console.error("Error saving data: ", error);
-				});
+				// ref.push({
+						  // id: dateAndIdArray[1],
+						  // date:$('#date').val(),
+						  // time:$('#time').val(),
+						  // dateCreated: dateAndIdArray[0]}).then(() => {
+					// // Trigger email sending if data save successful
+					// sendEmail(mail);
+				// })
+				// .catch((error) => {
+					// console.error("Error saving data: ", error);
+				// });
 
             }
         })
