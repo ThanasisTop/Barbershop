@@ -254,17 +254,17 @@ $(document).ready(function(){
 				
 				alert('data save successful');
 				//Save data
-				// ref.push({
-						  // id: dateAndIdArray[1],
-						  // date:$('#date').val(),
-						  // time:$('#time').val(),
-						  // dateCreated: dateAndIdArray[0]}).then(() => {
-					// // Trigger email sending if data save successful
-					// sendEmail(mail);
-				// })
-				// .catch((error) => {
-					// console.error("Error saving data: ", error);
-				// });
+				ref.push({
+						  id: dateAndIdArray[1],
+						  date:$('#date').val(),
+						  time:$('#time').val(),
+						  dateCreated: dateAndIdArray[0]}).then(() => {
+					// Trigger email sending if data save successful
+					sendEmail(mail);
+				})
+				.catch((error) => {
+					console.error("Error saving data: ", error);
+				});
 
             }
         })
