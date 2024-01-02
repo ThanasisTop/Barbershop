@@ -22,6 +22,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 	document.getElementById("spinner").style.display = "none";
 	document.getElementById("title").style.display = "none";
 	document.getElementById("logOutButton").style.display = "none";
+	document.getElementById("searchField").style.display = "none";
     console.log("No user signed in.");
 	setTimeout(()=>{window.location.href = "./login.html"}, "2000")
   }
@@ -77,4 +78,32 @@ function LogOut(){
 	}).catch((error) => {
 	// An error happened.
 	});
+}
+
+function searchAppointment(){
+	const database = firebase.database();
+	const dataRef = database.ref("appointment");
+	
+	const id=document.getElementById("appointmentId").value;
+	
+	if(!id){
+		return alert('Παρακαλώ εισάγετε κωδικό ραντεβού');
+	}
+	
+	dataRef.orderByChild('id').equalTo(id).once('value')
+  .then(function(snapshot) {
+	  if(snapshot.exists()){
+		  snapshot.forEach(function(childSnapshot) {
+			var appId = childSnapshot.key;
+			window.location.href = "./details.html?id="+appId;
+		  });
+	  }
+	  else
+		  alert('Δεν βρέθηκε ραντεβού');
+  })
+  .catch(function(error) {
+    console.error('Error fetching data:', error);
+	alert('Error fetching data')
+  });
+  
 }
