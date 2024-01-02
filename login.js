@@ -14,6 +14,12 @@ measurementId: "G-X4PKNN2H94"
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    window.location.href = "./user.html";
+  }
+});
+
 function LogIn()
 {	
 	event.preventDefault();
