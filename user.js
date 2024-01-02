@@ -160,6 +160,6 @@ function progressBar(appointmentsCounter){
 		document.getElementById("progressBar").innerHTML ='<div class="progress-bar bg-danger" role="progressbar" style="width:'+barWidth+'%" aria-valuenow="'+barWidth+'" aria-valuemin="0" aria-valuemax="100" id="progressBar">'+barWidth+'%</div>';
 	}else
 		document.getElementById("progressBar").innerHTML ='<div class="progress-bar" role="progressbar" style="width:'+barWidth+'%" aria-valuenow="'+barWidth+'" aria-valuemin="0" aria-valuemax="100" id="progressBar">'+barWidth+'%</div>';
-	document.getElementById("fractionValue").innerHTML ='<span class="text2" id="percentValue">'+appointmentsCounter +' απο τα 17 ραντεβού ειναι <span class="text2" style="color:red">μη διαθεσιμα.</span></span>';
-	document.getElementById("availableAppointments").innerHTML ='<span class="text2" id="availableAppointments">'+availableAppointments+' απο τα 17 ραντεβού ειναι <span class="text2" style="color:green">διαθεσιμα.</span></span>';
+	document.getElementById("fractionValue").innerHTML ='<span class="text2" id="percentValue">'+appointmentsCounter +' ραντεβού ειναι <span class="text2" style="color:red">μη διαθεσιμα.</span></span>';
+	document.getElementById("availableAppointments").innerHTML ='<span class="text2" id="availableAppointments">'+availableAppointments+' ραντεβού ειναι <span class="text2" style="color:green">διαθεσιμα.</span></span>';
 }
