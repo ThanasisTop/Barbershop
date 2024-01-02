@@ -252,7 +252,7 @@ $(document).ready(function(){
 					};	
 				
 				
-				alert('data save successful');
+				
 				//Save data
 				ref.push({
 						  id: dateAndIdArray[1],
