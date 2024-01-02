@@ -29,32 +29,28 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+
 function getData(user){
+	
 	const database = firebase.database();
 	//const dataRef = database.ref("private_appointment");
 	const dataRef = database.ref("appointment");
-	
 	const dataList = document.getElementById('dataList');
 	
-	//User info card
-	var gmtTime = new Date(user.metadata.creationTime);
-	const options = { timeZone: 'Europe/Athens', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-	const formatter = new Intl.DateTimeFormat('en-US', options);
-	const creationFormattedDate = formatter.format(gmtTime);
+	userProfileInfos(user);
 	
-	gmtTime = new Date(user.metadata.lastSignInTime);
-	const lastSignInTimeFormattedDate = formatter.format(gmtTime);
-
-	document.getElementById("cardDetails").innerHTML ='<div class="ms-2 c-details pl-2" id="cardDetails">'+
-														'<h6 class="mb-0">'+user.email+'</h6> <span><b>Date Created:</b> '+creationFormattedDate+'</span><br>'+
-														'<span><b>Last Sign In Date:</b> '+lastSignInTimeFormattedDate+'</span>'+
-													'</div>';
-	
+	var appointmentsCounter=0;
 	dataRef.once('value').then((snapshot) => {
 		snapshot.forEach((childSnapshot) => {
 			const data = childSnapshot.val();
 			const id = childSnapshot.key; // Get the ID (key)
-	
+			
+			
+			var currentFormattedDay=dateFormatting();
+			if(data.date==currentFormattedDay){
+				appointmentsCounter++;
+			}
+			
 			// Create list item element
 			const listItem = document.createElement('li');
 			listItem.className = 'list-group-item';
@@ -76,6 +72,7 @@ function getData(user){
 			dataList.appendChild(listItem);
 			
 		});
+		progressBar(appointmentsCounter);
 	})
 	.catch((error) => {
 		// Handle any errors
@@ -83,7 +80,7 @@ function getData(user){
 		console.error("Error fetching data:", error);
 		document.getElementById("spinner").style.display = "none";
 	});
-
+ 
 }
 
 function LogOut(){
@@ -121,4 +118,48 @@ function searchAppointment(){
 	alert('Error fetching data')
   });
   
+}
+
+function userProfileInfos(user, appointmentsCounter){
+	
+	//User info card
+	var gmtTime = new Date(user.metadata.creationTime);
+	const options = { timeZone: 'Europe/Athens', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+	const formatter = new Intl.DateTimeFormat('en-US', options);
+	const creationFormattedDate = formatter.format(gmtTime);
+	
+	gmtTime = new Date(user.metadata.lastSignInTime);
+	const lastSignInTimeFormattedDate = formatter.format(gmtTime);
+
+	document.getElementById("cardDetails").innerHTML ='<div class="ms-2 c-details pl-2" id="cardDetails">'+
+														'<h6 class="mb-0">'+user.email+'</h6> <span><b>Date Created:</b> '+creationFormattedDate+'</span><br>'+
+														'<span><b>Last Sign In Date:</b> '+lastSignInTimeFormattedDate+'</span>'+
+													'</div>';
+	
+}
+
+function dateFormatting(){
+	const dateString = new Date();
+	const date = new Date(dateString);
+	const day = date.getDate();
+	const month = date.getMonth() + 1; // Adding 1 because January is represented as 0
+	const year = date.getFullYear();
+	
+	// Padding zeros for single-digit day or month
+	const formattedDay = day < 10 ? `0${day}` : day;
+	const formattedMonth = month < 10 ? `0${month}` : month;
+	
+	return formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+}
+
+function progressBar(appointmentsCounter){
+	var barWidth = ((appointmentsCounter/17)*100).toFixed(2);	
+	var availableAppointments=17-appointmentsCounter;
+	
+	if(barWidth>=80){
+		document.getElementById("progressBar").innerHTML ='<div class="progress-bar bg-danger" role="progressbar" style="width:'+barWidth+'%" aria-valuenow="'+barWidth+'" aria-valuemin="0" aria-valuemax="100" id="progressBar">'+barWidth+'%</div>';
+	}else
+		document.getElementById("progressBar").innerHTML ='<div class="progress-bar" role="progressbar" style="width:'+barWidth+'%" aria-valuenow="'+barWidth+'" aria-valuemin="0" aria-valuemax="100" id="progressBar">'+barWidth+'%</div>';
+	document.getElementById("fractionValue").innerHTML ='<span class="text2" id="percentValue">'+appointmentsCounter +' απο τα 17 ραντεβού ειναι <span class="text2" style="color:red">μη διαθεσιμα.</span></span>';
+	document.getElementById("availableAppointments").innerHTML ='<span class="text2" id="availableAppointments">'+availableAppointments+' απο τα 17 ραντεβού ειναι <span class="text2" style="color:green">διαθεσιμα.</span></span>';
 }
