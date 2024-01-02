@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig);
 //Check if user exist
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    getData();
+    getData(user);
   } else {
     // No user is signed in, handle this as needed
 	document.getElementById("dataList").innerHTML = '<h1 style="color:red">Access Denied</h1>';
@@ -23,17 +23,32 @@ firebase.auth().onAuthStateChanged(function(user) {
 	document.getElementById("title").style.display = "none";
 	document.getElementById("logOutButton").style.display = "none";
 	document.getElementById("searchField").style.display = "none";
+	document.getElementById("userInfoCard").style.display = "none";
     console.log("No user signed in.");
 	setTimeout(()=>{window.location.href = "./login.html"}, "2000")
   }
 });
 
-function getData(){
+function getData(user){
 	const database = firebase.database();
 	//const dataRef = database.ref("private_appointment");
 	const dataRef = database.ref("appointment");
 	
 	const dataList = document.getElementById('dataList');
+	
+	//User info card
+	var gmtTime = new Date(user.metadata.creationTime);
+	const options = { timeZone: 'Europe/Athens', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+	const formatter = new Intl.DateTimeFormat('en-US', options);
+	const creationFormattedDate = formatter.format(gmtTime);
+	
+	gmtTime = new Date(user.metadata.lastSignInTime);
+	const lastSignInTimeFormattedDate = formatter.format(gmtTime);
+
+	document.getElementById("cardDetails").innerHTML ='<div class="ms-2 c-details pl-2" id="cardDetails">'+
+														'<h6 class="mb-0">'+user.email+'</h6> <span><b>Date Created:</b> '+creationFormattedDate+'</span><br>'+
+														'<span><b>Last Sign In Date:</b> '+lastSignInTimeFormattedDate+'</span>'+
+													'</div>';
 	
 	dataRef.once('value').then((snapshot) => {
 		snapshot.forEach((childSnapshot) => {
