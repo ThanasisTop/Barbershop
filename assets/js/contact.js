@@ -245,7 +245,7 @@ $(document).ready(function(){
 				
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "pasxalis6444@gmail.com",
+						To : "sakis530@hotmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
 						Body : message 
@@ -301,6 +301,7 @@ var setDateAndIdOnSubmit=function(){
 	 Email.send(mail).then(
 	      function(message){
 			if(message=='OK'){
+				alert('Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!');
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
 																	'</div>';
@@ -310,6 +311,7 @@ var setDateAndIdOnSubmit=function(){
 				}, "1000");
 			}
 			else{
+				alert('Το ραντεβού δεν ολοκληρώθηκε. Ξαναπροσπαθήστε σε λιγο.');
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού</h2><h2 class="contact-title" style="color:red">δεν ολοκληρώθηκε</h2>'+
 																		'<h2 class="contact-title">Ξαναπροσπαθήστε σε λιγο.</h2>'+
