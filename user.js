@@ -9,6 +9,8 @@ appId: "1:503743576752:web:afc840af1ed3db3cc29975",
 measurementId: "G-X4PKNN2H94"
 };
 
+
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -35,6 +37,7 @@ function getData(user){
 	const database = firebase.database();
 	//const dataRef = database.ref("private_appointment");
 	const dataRef = database.ref("appointment");
+	const dataRef2=database.ref("disabledDays");
 	const dataList = document.getElementById('dataList');
 	
 	userProfileInfos(user);
@@ -80,7 +83,8 @@ function getData(user){
 		console.error("Error fetching data:", error);
 		document.getElementById("spinner").style.display = "none";
 	});
- 
+	
+	
 }
 
 function LogOut(){
@@ -163,3 +167,44 @@ function progressBar(appointmentsCounter){
 	document.getElementById("fractionValue").innerHTML ='<span class="text2" id="percentValue">'+appointmentsCounter +' ραντεβού ειναι <span class="text2" style="color:red">μη διαθεσιμα.</span></span>';
 	document.getElementById("availableAppointments").innerHTML ='<span class="text2" id="availableAppointments">'+availableAppointments+' ραντεβού ειναι <span class="text2" style="color:green">διαθεσιμα.</span></span>';
 }
+
+function disableDate(){
+	const database = firebase.database();
+	const dataRef2=database.ref("disabledDays");
+	
+	dataRef2.push({date:$('#dateToDisable').val()}).then(() => {
+					alert('Η ημερα απενεργοποιηθηκε επιτυχώς');
+					location.reload();
+				})
+				.catch((error) => {
+					alert('Η ημερα δεν απενεργοποιηθηκε');
+				});
+}
+
+$(document).ready(function(){
+	
+	const database = firebase.database();
+	const dataRef2=database.ref("disabledDays");
+	var disabledDays=[]
+	
+	dataRef2.once('value', function(snapshot) {
+		snapshot.forEach(function(childSnapshot) {
+			var userData = childSnapshot.val();
+			disabledDays.push(userData.date);
+		});
+		
+		$('.datepicker').datepicker({                                            
+		datesDisabled: disabledDays,                                      
+		language: "en",
+		autoclose: true,
+		format: "dd/mm/yyyy",
+		startDate: new Date()
+	});
+	})
+	.catch((error) => {
+		// Handle any errors
+		document.getElementById("dataList").innerHTML = '<h1 style="color:red">Access Denied</h1>';
+		console.error("Error fetching data:", error);
+		document.getElementById("spinner").style.display = "none";
+	});
+})

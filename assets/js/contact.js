@@ -1,29 +1,6 @@
 $(document).ready(function(){
 	
-	var datesForDisable = ["25/12/2023","31/12/2023","01/01/2024"];
-	//var datesAndTimesForDisable = {};
-	                                                                        
-    $('.datepicker').datepicker({                                            
-		datesDisabled: datesForDisable,                                      
-		language: "en",
-		autoclose: true,
-		format: "dd/mm/yyyy",
-		startDate: new Date()
-	});
 	
-	// $("#date" ).on( "change", function() {
-		// var txt='';
-		// $.each(datesAndTimesForDisable, function(key, value) {
-			// if($('#date').val()==key){
-				// txt+='Μη διαθέσιμες ώρες για αυτή τη μέρα.<br>'
-				// for(i in value){
-					// txt+=value[i]+'<br>'
-				// }	
-			// }			
-	
-		// });
-		// document.getElementById("unavailableHours").innerHTML = txt;
-	// });
 	
 	//Date validation in db case
 	$("#date" ).on( "change", function() {
@@ -60,22 +37,6 @@ $(document).ready(function(){
 	});
 	
 	
-	// let today = new Date();
-
-	// // Extract date components
-	// let dd = String(today.getDate()).padStart(2, '0');
-	// let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-	// let yyyy = today.getFullYear();
-	
-	// // Extract time components
-	// let hh = String(today.getHours()).padStart(2, '0');
-	// let min = String(today.getMinutes()).padStart(2, '0');
-	// let ss = String(today.getSeconds()).padStart(2, '0');
-	
-	// // Format the date and time as dd/mm/yyyy HH:MM:SS
-	// let formattedDateTime = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
-	// let myId=`${dd}${mm}${yyyy}${hh}${min}${ss}`
-	
 	//Database configuration
 	const firebaseConfig = {
 		databaseURL: "https://barbershop-76b04-default-rtdb.europe-west1.firebasedatabase.app",
@@ -95,6 +56,31 @@ $(document).ready(function(){
 		});
 	});
 	
+	//Get disabled dates
+	const dataRef2=database.ref("disabledDays");
+	var disabledDays=[]
+	
+	dataRef2.once('value', function(snapshot) {
+		snapshot.forEach(function(childSnapshot) {
+			var userData = childSnapshot.val();
+			disabledDays.push(userData.date);
+		});
+		
+		$('.datepicker').datepicker({                                            
+		datesDisabled: disabledDays,                                      
+		language: "en",
+		autoclose: true,
+		format: "dd/mm/yyyy",
+		startDate: new Date()
+	});
+	})
+	
+	.catch((error) => {
+		// Handle any errors
+		document.getElementById("dataList").innerHTML = '<h1 style="color:red">Access Denied</h1>';
+		console.error("Error fetching data:", error);
+		document.getElementById("spinner").style.display = "none";
+	});
 	
 	function sortAppointmentsOfCurrentDate(appointments){
 		const formattedData = appointments.map(item => {
