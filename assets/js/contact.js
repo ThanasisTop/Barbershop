@@ -171,7 +171,7 @@ $(document).ready(function(){
 					alert('Παρακαλώ επιλέξτε Ώρα');
 					return;
 				}
-				if($.inArray($('#date').val(), datesForDisable)==0){
+				if($.inArray($('#date').val(), disabledDays)==0){
 					alert('Η ημερομηνία που διαλέξατε δεν είναι διαθέσιμη');
 					return;
 				}
