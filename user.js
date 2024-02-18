@@ -190,7 +190,9 @@ function disableHour(){
 				  date:$('#selectedDate').val(),
 				  time:$('#selectedHour').val(),
 				  dateCreated: '0000000000'
-				}).then(()=>alert('Η ώρα απενεργοποιηθηκε επιτυχώς'))
+				}).then(()=>{
+					alert('Η ώρα απενεργοποιηθηκε επιτυχώς')
+				    location.reload();})
 				.catch((error) => {
 					console.error("Error saving data: ", error);
 				});
