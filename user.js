@@ -37,7 +37,6 @@ function getData(user){
 	const database = firebase.database();
 	//const dataRef = database.ref("private_appointment");
 	const dataRef = database.ref("appointment");
-	const dataRef2=database.ref("disabledDays");
 	const dataList = document.getElementById('dataList');
 	
 	userProfileInfos(user);
@@ -181,6 +180,21 @@ function disableDate(){
 				});
 }
 
+
+function disableHour(){
+	const database = firebase.database();
+	const dataRef = database.ref("appointment");
+	
+	dataRef.push({
+				  id: '0000000000',
+				  date:$('#selectedDate').val(),
+				  time:$('#selectedHour').val(),
+				  dateCreated: '0000000000'
+				}).then(()=>alert('Η ώρα απενεργοποιηθηκε επιτυχώς'))
+				.catch((error) => {
+					console.error("Error saving data: ", error);
+				});
+}
 $(document).ready(function(){
 	
 	const database = firebase.database();
