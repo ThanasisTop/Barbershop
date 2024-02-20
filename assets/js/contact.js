@@ -158,6 +158,9 @@ $(document).ready(function(){
 				dateToCheck.setHours(splittedTime[0]);
 				dateToCheck.setMinutes(splittedTime[1]);
 				
+				
+				document.getElementById("sendButton").innerHTML ='<div><h3>Sending...</h3></div>';
+				
 				if(new Date()>dateToCheck){
 					alert('Η ώρα που διαλέξατε έχει παρέλθει');
 					return;
