@@ -61,8 +61,6 @@
                     </div>
                 </div>
         </div>
-		<h1 class="text-center" id="title">Όλα τα Ραντεβού</h1>
-		<hr>
 		<label>Γρήγορη Μετάβαση σε Ραντεβού</label> 
 		<div class="input-group mb-3" id="searchField">
 			<input type="text" class="form-control" placeholder="Κωδικός Ραντεβού" aria-label="Κωδικός Ραντεβού" aria-describedby="basic-addon2" id="appointmentId">
@@ -120,7 +118,11 @@
 				</div>
 		</div>
 		<br>
-		<ul id="dataList" class="list-group">
+		<div class="text-right">
+			<button id="appointmentButton" class="btn btn-outline-secondary" type="button" onclick="showList()">Όλα τα Ραντεβου</button>
+		</div>
+		<br>
+		<ul id="dataList" class="list-group" style="display: none;">
 			<!-- Data will be populated here -->
 		</ul>
 		<hr>

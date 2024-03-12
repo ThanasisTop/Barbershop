@@ -197,6 +197,16 @@ function disableHour(){
 					console.error("Error saving data: ", error);
 				});
 }
+
+function showList() {
+  var list = document.getElementById("dataList");
+  if (list.style.display === "none") {
+    list.style.display = "block";
+  } else {
+    list.style.display = "none";
+  }
+}
+
 $(document).ready(function(){
 	
 	const database = firebase.database();
