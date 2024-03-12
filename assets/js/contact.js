@@ -47,6 +47,7 @@ $(document).ready(function(){
 	const database = firebase.database();
 	
 	const ref = database.ref("appointment");
+	const emaillogref = database.ref("EmailLogs");
 	
 	var apps=[]
 	ref.orderByChild('date').once('value', function(snapshot) {
@@ -225,7 +226,7 @@ $(document).ready(function(){
 				var dateAndIdArray=setDateAndIdOnSubmit();
 				
 				//email preperation
-				var message = "<b>Κωδικος Ραντεβου: "+dateAndIdArray[1]+"</b><br>"+
+				var messageapp = "<b>Κωδικος Ραντεβου: "+dateAndIdArray[1]+"</b><br>"+
 							  "<b>Ημερομηνία: "+$('#date').val()+"</b><br>"+
 							  "<b>Ώρα: "+$('#time').val()+"</b><br>"+
 							  "<b>Όνομα: "+$('#name').val()+"</b><br>"+
@@ -234,26 +235,56 @@ $(document).ready(function(){
 				
 				var mail={ 
 						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
-						To : "pasxalis6444@gmail.com",
+						To : "sakis530@hotmail.com",
 						From : "sakis530@hotmail.com",
 						Subject : $('#subject').val(),
-						Body : message 
+						Body : messageapp
 					};	
 				
 				
 				
-				//Save data
-				ref.push({
-						  id: dateAndIdArray[1],
-						  date:$('#date').val(),
-						  time:$('#time').val(),
-						  dateCreated: dateAndIdArray[0]}).then(() => {
-					// Trigger email sending if data save successful
-					sendEmail(mail);
-				})
-				.catch((error) => {
-					console.error("Error saving data: ", error);
-				});
+				//Send email	
+				Email.send(mail).then(
+					function(message){
+						if(message=='OK'){
+							//Save data if email is success
+							ref.push({
+								id: dateAndIdArray[1],
+								date:$('#date').val(),
+								time:$('#time').val(),
+								dateCreated: dateAndIdArray[0]}).then(setTimeout(() => {
+									location.reload();
+								}, "1000"))
+							.catch((error) => {
+								console.error("Error saving data: ", error);
+							});
+							alert('Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!');
+							document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
+																					'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
+																				'</div>';
+							document.getElementById("afterEmailErase").innerHTML = '<div></div>';
+						}
+						else{
+							//Save email log error
+							emaillogref.push({
+								id: dateAndIdArray[1],
+								date:$('#date').val(),
+								time:$('#time').val(),
+								dateCreated: dateAndIdArray[0],
+								ErrorMessage:message}).then(() => {
+								})
+							.catch((error) => {
+								console.error("Error saving email log: ", error);
+							});
+							alert('Το ραντεβού δεν ολοκληρώθηκε. Ξαναπροσπαθήστε σε λιγο.');
+							document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
+																					'<h2 class="contact-title">Το ραντεβού</h2><h2 class="contact-title" style="color:red">δεν ολοκληρώθηκε</h2>'+
+																					'<h2 class="contact-title">Ξαναπροσπαθήστε σε λιγο.</h2>'+
+																			'</div>';
+							document.getElementById("afterEmailErase").innerHTML = '<div></div>';
+						}
+					}
+				);	
 
             }
         })
@@ -307,8 +338,7 @@ var setDateAndIdOnSubmit=function(){
 																'</div>';
 				document.getElementById("afterEmailErase").innerHTML = '<div></div>';
 			}
-		}
-		);
+		});
  };
  
 })
