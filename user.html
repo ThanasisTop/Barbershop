@@ -112,20 +112,26 @@
 				<button class="btn btn-outline-secondary" type="button" onclick="disableHour()">Απενεργοποίηση</button>
 			</div>
 		</div>
+		<br>
+		<h2>Σημερινά Ραντεβού</h2>
+		<ul id="todaysDataList" class="list-group">
+			<!-- Todays Data will be populated here -->
+		</ul>
+		<hr>
+		<br>
+		<div class="text-right">
+			<button id="appointmentButton" class="btn btn-outline-secondary" type="button" onclick="showList()">Όλα τα Ραντεβου</button>
+		</div>
+		<h2 id="dataListLabel" style="display: none;">Όλα τα Ραντεβού</h2>
+		<ul id="dataList" class="list-group" style="display: none;">
+			<!-- Data will be populated here -->
+		</ul>
 		<div class="text-center" id="spinner">
 				<div class="spinner-border" role="status">
 					<span class="sr-only">Loading...</span>
 				</div>
 		</div>
-		<br>
-		<div class="text-right">
-			<button id="appointmentButton" class="btn btn-outline-secondary" type="button" onclick="showList()">Όλα τα Ραντεβου</button>
-		</div>
-		<br>
-		<ul id="dataList" class="list-group" style="display: none;">
-			<!-- Data will be populated here -->
-		</ul>
-		<hr>
+		
 	</div>	
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

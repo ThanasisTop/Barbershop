@@ -38,6 +38,7 @@ function getData(user){
 	//const dataRef = database.ref("private_appointment");
 	const dataRef = database.ref("appointment");
 	const dataList = document.getElementById('dataList');
+	const todaysDataList = document.getElementById('todaysDataList');
 	
 	userProfileInfos(user);
 	
@@ -50,7 +51,28 @@ function getData(user){
 			
 			var currentFormattedDay=dateFormatting();
 			if(data.date==currentFormattedDay){
+				
 				appointmentsCounter++;
+				
+				// Create list item element
+				const listItem = document.createElement('li');
+				listItem.className = 'list-group-item';
+				
+				// Create anchor tag and set href
+				const anchor = document.createElement('a');
+				anchor.href = `details.html?id=${id}`; // Replace 'details.html' with your desired link and parameters
+				anchor.textContent = `Κωδικός Ραντεβού: ${data.id}`; // Display ID and data
+				// Replace 'yourProperty' with the property name in your data
+		
+				// Append anchor tag to list item
+				listItem.appendChild(anchor);
+				
+				//listItem.textContent = `Id:${id}, Appointment ID: ${data.id}, Date: ${data.date}`; // Display ID and data
+				// Replace 'yourProperty' with the property name in your data
+		
+				// Append list item to the list
+				document.getElementById("spinner").style.display = "none";
+				todaysDataList.appendChild(listItem);
 			}
 			
 			// Create list item element
@@ -200,10 +222,13 @@ function disableHour(){
 
 function showList() {
   var list = document.getElementById("dataList");
+  var label = document.getElementById("dataListLabel");
   if (list.style.display === "none") {
     list.style.display = "block";
+    label.style.display = "block";
   } else {
     list.style.display = "none";
+    label.style.display = "none";
   }
 }
 
