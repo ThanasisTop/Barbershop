@@ -99,6 +99,38 @@ $(document).ready(function(){
 		return sortedResult
 	}
 	
+	
+	async function refreshAndPushNewRecord(newRecord) {
+        try {
+            const recordsRef = firebase.database().ref('appointment');
+            
+            // Fetch existing records
+            const snapshot = await recordsRef.once('value');
+            const records = snapshot.val();
+            
+            // Check if the new record already exists
+            let recordExists = false;
+            for (let key in records) {
+              if (records[key].date === newRecord.date && records[key].time === newRecord.time) {
+                recordExists = true;
+                break;
+              }
+            }
+            
+            if (!recordExists) {
+              // Push new record
+              const newRecordRef = recordsRef.push();
+              await newRecordRef.set(newRecord);
+			  return true;
+            } else {
+              alert('Ωπ! Κάποιος άλλος σε πρόλαβε. Δοκίμασε ξανά με άλλη ημερομηνία ή ώρα.');
+			  return false;
+            }
+        } catch (error) {
+            console.error('Error adding new record:', error);
+        }
+	}
+	
     (function($) {
         "use strict";
 
@@ -234,57 +266,33 @@ $(document).ready(function(){
 							  "<b>Υπηρεσία: "+$('#subject').val()+"</b><br>";
 				
 				var mail={ 
-						SecureToken : "e423ce2a-a4db-4edf-b089-5d815ac80203",
+						SecureToken : "d51e30f7-3acc-4314-8f9c-2e8d79110562",
 						To : "pasxalis6444@gmail.com",
-						From : "sakis530@hotmail.com",
+						From : "pasxalis6444@gmail.com",
 						Subject : $('#subject').val(),
 						Body : messageapp
 					};	
 				
+				const newRecord = {
+					id: dateAndIdArray[1],
+					date:$('#date').val(),
+					time:$('#time').val(),
+					dateCreated: dateAndIdArray[0]
+				};
 				
-				
-				//Send email	
-				Email.send(mail).then(
-					function(message){
-						if(message=='OK'){
-							//Save data if email is success
-							ref.push({
-								id: dateAndIdArray[1],
-								date:$('#date').val(),
-								time:$('#time').val(),
-								dateCreated: dateAndIdArray[0]}).then(setTimeout(() => {
-									location.reload();
-								}, "1000"))
-							.catch((error) => {
-								console.error("Error saving data: ", error);
-							});
-							alert('Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!');
-							document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
-																					'<h2 class="contact-title">Το ραντεβού ολοκληρώθηκε. Ευχαριστούμε πολυ!</h2>'+
-																				'</div>';
-							document.getElementById("afterEmailErase").innerHTML = '<div></div>';
+				//Prevent same date and time issues
+				refreshAndPushNewRecord(newRecord).then(
+					function(result) { 
+						if(result){
+							sendEmail(mail);
 						}
 						else{
-							//Save email log error
-							emaillogref.push({
-								id: dateAndIdArray[1],
-								date:$('#date').val(),
-								time:$('#time').val(),
-								dateCreated: dateAndIdArray[0],
-								ErrorMessage:message}).then(() => {
-								})
-							.catch((error) => {
-								console.error("Error saving email log: ", error);
-							});
-							alert('Το ραντεβού δεν ολοκληρώθηκε. Ξαναπροσπαθήστε σε λιγο.');
-							document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
-																					'<h2 class="contact-title">Το ραντεβού</h2><h2 class="contact-title" style="color:red">δεν ολοκληρώθηκε</h2>'+
-																					'<h2 class="contact-title">Ξαναπροσπαθήστε σε λιγο.</h2>'+
-																			'</div>';
-							document.getElementById("afterEmailErase").innerHTML = '<div></div>';
+							console.log('appointment cancelled')	
 						}
-					}
-				);	
+					},
+					function(error) { alert(error) }
+				);
+				
 
             }
         })
@@ -331,7 +339,7 @@ var setDateAndIdOnSubmit=function(){
 				}, "1000");
 			}
 			else{
-				alert('Το ραντεβού δεν ολοκληρώθηκε. Ξαναπροσπαθήστε σε λιγο.');
+				alert(message);
 				document.getElementById("afterEmail").innerHTML ='<div class="col-lg-8">'+
 																		'<h2 class="contact-title">Το ραντεβού</h2><h2 class="contact-title" style="color:red">δεν ολοκληρώθηκε</h2>'+
 																		'<h2 class="contact-title">Ξαναπροσπαθήστε σε λιγο.</h2>'+
